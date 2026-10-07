@@ -1,12 +1,96 @@
+:root {
+  --bg: #f4f6f9;
+  --surface: #ffffff;
+  --line: #d5dbe3;
+  --text: #1a1a1a;
+  --muted: #566170;
+  --header-bg: #0b1d3a;
+  --header-text: #ffffff;
+  --header-muted: #b8c4d6;
+  --accent: #0a7a4f;
+  --accent-header: #5ee0a8;
+  --error-bg: #fde8e8;
+  --error-text: #8a1c1c;
+  --error-line: #e3a5a5;
+  --font-body: system-ui, sans-serif;
+  --font-title: system-ui, sans-serif;
+  --label-spacing: 0;
+}
+
+[data-theme="dark"] {
+  --bg: #0a0f14;
+  --surface: #0d151c;
+  --line: #1f2d38;
+  --text: #ffffff;
+  --muted: #8a9aa8;
+  --header-bg: #0a0f14;
+  --header-text: #e6edf3;
+  --header-muted: #8a9aa8;
+  --accent: #3ddc97;
+  --accent-header: #3ddc97;
+  --error-bg: transparent;
+  --error-text: #ff9a8a;
+  --error-line: #d6453a;
+  --font-body: var(--font-mono), ui-monospace, monospace;
+  --font-title: var(--font-display), system-ui, sans-serif;
+  --label-spacing: 0.15em;
+}
+
 * { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; font-family: system-ui, sans-serif; color: #1a1a1a; }
+html, body { margin: 0; height: 100%; font-family: var(--font-body); color: var(--text); background: var(--bg); }
+
 main { display: flex; flex-direction: column; height: 100vh; }
-header { padding: 0.75rem 1rem; background: #0b1d3a; color: #fff; }
-h1 { margin: 0 0 0.5rem; font-size: 1.25rem; }
-.values { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; margin: 0; }
-.values dt { font-size: 0.75rem; opacity: 0.7; }
-.values dd { margin: 0; font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+
+header {
+  display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+  padding: 0.5rem 1rem; min-height: 54px;
+  background: var(--header-bg); color: var(--header-text);
+  border-bottom: 1px solid var(--line);
+}
+h1 { margin: 0; font-family: var(--font-title); font-size: 1.25rem; letter-spacing: 0.02em; }
+.norad { font-size: 0.75rem; color: var(--header-muted); }
+.header-end { margin-left: auto; display: flex; align-items: center; gap: 1rem; }
+
+.signal { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 0.08em; color: var(--accent-header); }
+.signal::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.signal.lost { color: #ff9a8a; }
+
+.theme-toggle {
+  min-width: 44px; min-height: 44px; padding: 0 0.75rem;
+  font: inherit; font-size: 0.8rem; cursor: pointer;
+  color: var(--header-text); background: transparent;
+  border: 1px solid var(--header-muted); border-radius: 6px;
+}
+.theme-toggle:hover { background: rgba(255, 255, 255, 0.1); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent-header); outline-offset: 2px; }
+
+.content { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 315px; }
+.map { min-height: 0; background: var(--bg); }
+
+.telemetry { background: var(--surface); border-left: 1px solid var(--line); overflow-y: auto; }
+.telemetry .metric { padding: 1.1rem 1.8rem 1rem; border-bottom: 1px solid var(--line); }
+.telemetry dl { margin: 0; }
+.telemetry dt { font-size: 0.7rem; text-transform: uppercase; letter-spacing: var(--label-spacing); color: var(--muted); }
+.telemetry dd { margin: 0.35rem 0 0; font-size: 2rem; font-variant-numeric: tabular-nums; color: var(--text); }
+.telemetry dd small { margin-left: 0.5rem; font-size: 0.85rem; color: var(--muted); }
+
 .status { margin: 0; padding: 0.5rem 1rem; }
-.error { background: #fde8e8; color: #8a1c1c; }
-.map { flex: 1; min-height: 0; }
+.error {
+  margin: 1.25rem 1.8rem; padding: 0.75rem 0.9rem; font-size: 0.8rem; line-height: 1.5;
+  background: var(--error-bg); color: var(--error-text); border: 1px solid var(--error-line);
+}
+.error strong { display: block; letter-spacing: 0.05em; }
+
 .iss-marker { font-size: 28px; line-height: 32px; text-align: center; }
+.iss-crosshair { background: none; border: 0; }
+
+[data-theme="dark"] .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(0.6) contrast(0.9) saturate(0.3); }
+[data-theme="dark"] .leaflet-container { background: var(--bg); }
+[data-theme="dark"] .leaflet-control-attribution { background: rgba(10, 15, 20, 0.85); color: #a9b8c5; font-family: var(--font-body); }
+[data-theme="dark"] .leaflet-control-attribution a { color: #8fc7ff; }
+
+@media (max-width: 768px) {
+  main { height: auto; min-height: 100vh; }
+  .content { grid-template-columns: 1fr; grid-template-rows: 60vh auto; }
+  .telemetry { border-left: 0; border-top: 1px solid var(--line); }
+}

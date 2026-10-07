@@ -26,3 +26,11 @@ npm start
 ```
 npx vercel --prod
 ```
+
+## Tests
+
+```bash
+npm test
+```
+
+Vitest + React Testing Library (jsdom); Tests liegen unter `app/**/*.test.js`.
